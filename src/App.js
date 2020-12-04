@@ -57,9 +57,10 @@ export default function App() {
                     {mode === "chatView" &&
                         <>
                             <UserHeader onBackToHomePage={handleBack} name={contactFound.name} avatarSrc={contactFound.src} />
-                            <MessegeBar
-                                userMessege={contactFound.messeges[2].messegeText}
-                                selfMessege={contactFound.messeges[2].messegeText}
+                         <MessegeBar
+                         messeges={contactFound.messeges}
+                                // userMessege={contactFound.messeges[2].messegeText}
+                                // selfMessege={contactFound.messeges[2].messegeText}
                             />
                             <SendMessege />
                         </>

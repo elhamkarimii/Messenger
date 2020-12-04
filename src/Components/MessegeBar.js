@@ -26,11 +26,25 @@ const UserMessege = styled.div`
     margin-top: 10px;
     line-height: 1.5;
 `
-export function MessegeBar({ selfMessege, userMessege }) {
+
+const Messeges = styled.div`
+   min-height: 27px;
+    width: 210px;
+    background-color: ${props=>props.self?' #32bea6':'#fff'};
+    border-radius: 7px;
+    border : 1px solid #ccc;
+    /* float: left; */
+    padding: 5px;
+    ${props=>props.self?'margin-right:auto':'margin-left:auto'}
+    margin-top: 10px;
+    line-height: 1.5;
+`
+export function MessegeBar({ messeges}) {
     return (
         <>
-            {DATA.self && <SelfMessege>{selfMessege}</SelfMessege>}
-            {!DATA.self &&<UserMessege>{userMessege}</UserMessege>}
+      { messeges.map(messege=> <Messeges  self={messege.self}>{messege.messegeText}</Messeges>)}
+            {/* {DATA.self && <SelfMessege>{selfMessege}</SelfMessege>}
+            {!DATA.self &&<UserMessege>{userMessege}</UserMessege>} */}
         </>
     )
 }
