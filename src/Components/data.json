@@ -1,0 +1,90 @@
+[
+    {
+        "name" : "Elham",
+        "id" : "1",
+        "src" : "./avatarImg.png",
+        "messeges" : [
+            {
+                "messegeText" : "hello!",
+                "createdAt" : "12:02",
+                "self" : true
+            },
+            {
+                "messegeText" : "hi!",
+                "createdAt" : "14:02",
+                "self" : false
+            },
+            {
+                "messegeText" : "how are yor!",
+                "createdAt" : "12:58",
+                "self" : true
+            }
+        ]
+    },
+    {
+        "name" : "chester",
+        "id" : "2",
+        "src" : "./avatarImg.png",
+        "messeges" : [
+            {
+                "messegeText" : "happy chrismas!",
+                "createdAt" : "12:02",
+                "self" : true
+            },
+            {
+                "messegeText" : "hi!",
+                "createdAt" : "20:02",
+                "self" : false
+            },
+            {
+                "messegeText" : "happy chrismas!",
+                "createdAt" : "23:02",
+                "self" : true
+            }
+        ]
+    },
+    {
+        "name" : "mary",
+        "id" : "3",
+        "src" : "./avatarImg.png",
+        "messeges" : [
+            {
+                "messegeText" : "hello!",
+                "createdAt" : "12:02",
+                "self" : true
+            },
+            {
+                "messegeText" : "hi!",
+                "createdAt" : "12:02",
+                "self" : false
+            },
+            {
+                "messegeText" : "hello everybody how are you doning?",
+                "createdAt" : "2:45",
+                "self" : true
+            }
+        ]
+    },
+    {
+        "name" : "gerald",
+        "id" : "4",
+        "src" : "./avatarImg.png",
+        "messeges" : [
+            {
+                "messegeText" : "hello!",
+                "createdAt" : "12:02",
+                "self" : true
+            },
+            {
+                "messegeText" : "hi!",
+                "createdAt" : "12:02",
+                "self" : false
+            },
+            {
+                "messegeText" : "thats great!!",
+                "createdAt" : "18:30",
+                "self" : true
+            }
+        ]
+    }
+]
