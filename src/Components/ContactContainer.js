@@ -4,7 +4,7 @@ import Contacts from "./Contacts";
 export default function ContactContainer({ onHandleContClick, clickHandler, data, onChange , userId}) {
 
     const filteredContacts = data.filter(item => item.name.toLowerCase().includes(onChange.toLowerCase()))
-
+ 
     return (<>
         {  filteredContacts.map(item => <Contacts
             key={item.id}

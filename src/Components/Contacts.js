@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import styled from "styled-components";
-import DATA from "./data.json"
+import reducer from "./reducer"
 
 const Container = styled.div`
     width: 495px;
@@ -56,11 +56,19 @@ const UnreadBox = styled.div`
     right:6px;
 `
 export default function Contacts({ name, src, createdAt, lastMessege, onHandleContactClick ,id, clickContact, messegeLength, userId}) {
-    const [unreadMessege, setUnreadMessege ] = useState(messegeLength)
+    // const [unreadMessege, setUnreadMessege ] = useState(messegeLength)
+
+    const [{unreadMessege}, dispatch] = useReducer(reducer, {
+        unreadMessege: messegeLength
+    })
+ 
     function handleClick(e) {
         onHandleContactClick()
-        setUnreadMessege(0);
         clickContact()
+        // setUnreadMessege(0);
+        dispatch({
+            type: 'UNREAD_MESSAGES'
+        })
     }
 
     return (

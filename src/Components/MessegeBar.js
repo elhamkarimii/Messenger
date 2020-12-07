@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import styled from "styled-components"
 import DATA from "./data.json"
 import * as fa from 'react-icons/fa';
+import reducer from "./reducer"
 
 
 const MessegesWrapper = styled.div`
@@ -47,23 +48,34 @@ const SendMessegeInput = styled.input`
     margin-right: 12px;
     font-size: 17px;
     font-family:"Segoe";
-s
+
 `
 const SendIcon = styled.p`
     
 `
 export function MessegeBar({ messeges, onKeyPress }) {
-    const [onChange, setOnchange] = useState('');
+    // const [onChange, setOnchange] = useState('');
+
+    const [{ onChange }, dispatch] = useReducer(reducer, {
+        onChange: ""
+    })
 
 
     function handleInputChange(e) {
-        setOnchange(e.target.value)
+        // setOnchange(e.target.value)
+        dispatch({
+            type: 'WRITING_MESSEGE',
+            payload: e.target.value
+        })
     };
 
     function handleSendMessege() {
-        if(onChange){
+        if (onChange) {
             onKeyPress(onChange)
-            setOnchange("")
+            // setOnchange("")
+            dispatch({
+                type: 'CLEARING_MESSEGE_INPUT'
+            })
         }
         // const newMessege = [...textMessege]
         // newMessege.push({
@@ -79,7 +91,10 @@ export function MessegeBar({ messeges, onKeyPress }) {
     function handleKeyPress(e) {
         if (e.key === "Enter" && onChange) {
             onKeyPress(onChange)
-            setOnchange("")
+            // setOnchange("")
+            dispatch({
+                type: 'CLEARING_MESSEGE_INPUT'
+            })
         }
         // if (e.key === 'Enter') {
         //     const newMessege = [...textMessege]
@@ -99,7 +114,13 @@ export function MessegeBar({ messeges, onKeyPress }) {
                 {messeges.map(messege => <Messeges self={messege.self} key={messege.id}>{messege.messegeText}</Messeges>)}
             </MessegesWrapper>
             <SendMessegeBox>
-                <SendMessegeInput placeholder="type something!" autoFocus={true} type="text" value={onChange} onChange={handleInputChange} onKeyPress={handleKeyPress} />
+                <SendMessegeInput
+                    placeholder="type something!"
+                    autoFocus={true} type="text"
+                    value={onChange}
+                    onChange={handleInputChange}
+                    onKeyPress={handleKeyPress}
+                />
                 <SendIcon onClick={handleSendMessege} >
                     <fa.FaPaperPlane />
                 </SendIcon>

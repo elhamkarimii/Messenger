@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import styled from "styled-components"
 import * as fa from 'react-icons/fa';
-
+import reducer from "./reducer"
 
 const ViewBox = styled.div`
     display: flex;
@@ -34,20 +34,35 @@ const Input = styled.input`
     font-size: 20px;
 `
 export default function FancyMessengerBox({ onInputChange }) {
-    const [mode, setMode] = useState('view')
-    const [value, setValue] = useState('')
+    // const [mode, setMode] = useState('view')
+    // const [value, setValue] = useState('')
+
+    const [{mode, value}, dispatch] = useReducer(reducer,{
+        mode: "view",
+        value: ""
+    })
 
     function handleSearchMode() {
-        setMode('search')
+        // setMode('search')
+        dispatch({
+            type: 'SEARCH_MODE'
+        })
     }
 
     function handleViewMode() {
-        setMode('view')
+        // setMode('view')
+        dispatch({
+            type: 'VIEW_MODE'
+        })
     }
 
     function handleInputChange(e) {
-        setValue(e.target.value)
         onInputChange(e.target.value)
+        // setValue(e.target.value)
+        dispatch({
+            type: 'HANDLE_SEARCH_CHANGE',
+            payload: e.target.value
+        })
     }
 
     return (

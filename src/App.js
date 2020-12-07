@@ -1,5 +1,5 @@
 import styled, { createGlobalStyle } from "styled-components";
-import React, { useState } from "react";
+import React, { useState, useReducer } from "react";
 // import Contacts from "./Components/Contacts";
 import ContactContainer from "./Components/ContactContainer";
 import UserHeader from "./Components/UserHeader";
@@ -9,6 +9,7 @@ import HomePage from "./Components/HomePage";
 import DATA from "./Components/data.json"
 import { GlobalFont } from './fonts/fonts'
 import * as fa from 'react-icons/fa';
+import reducer from "./Components/reducer"
 
 // const GlobalStyle = createGlobalStyle`
 //     body{
@@ -23,7 +24,6 @@ const Wrapper = styled.div`
     margin: -8px;
     width: 100%;
     border: 7px solid #fff;
-    /* max-width: 100%; */
 `
 const MainContainer = styled.div`
     display:flex;
@@ -35,7 +35,6 @@ const LeftContainer = styled.div`
     display: inline-block;
 `
 const RightContainer = styled.div`
-/* overflow-x:scroll; */
     border: 1px solid #ccc;
     display: flex;
     flex-direction: column;
@@ -52,58 +51,86 @@ const HeaderBox = styled.div`
     margin: -8px;
 `
 export default function App() {
-    const [data, setData] = useState(DATA)
-    const [mode, setMode] = useState("homePage");
-    const [contactFound, setContactFound] = useState({});
-    const [userId, setUserId] = useState(0)
-    const [searchValue, setSearchValue] = useState("")
+    // const [data, setData] = useState(DATA)
+    // const [mode, setMode] = useState("homePage");
+    // const [contactFound, setContactFound] = useState({});
+    // const [userId, setUserId] = useState(0)
+    // const [searchValue, setSearchValue] = useState("")
+
+    const [{ data, mode, contactFound, userId, searchValue }, dispatch] = useReducer(reducer, {
+        data: DATA,
+        mode: "homePage",
+        contactFound: {},
+        userId: 0,
+        searchValue: ""
+    })
 
     function handleBack() {
-        setMode("homePage")
+        // setMode("homePage")
+        dispatch({
+            type: "HOMEPAGE_MODE"
+        })
     }
 
     function handleContactClick() {
-        setMode("chatView")
+        // setMode("chatView")
+        dispatch({
+            type: "CHATVIEW_MODE"
+        })
     }
 
     function handleFindContact(id) {
-        const dataCopied = [...data]
-        const itemFound = dataCopied.find(item => item.id === id);
-        setContactFound(itemFound)
-        setUserId(id)
+     
+        // const dataCopied = [...data]
+        // const itemFound = dataCopied.find(item => item.id === id);
+        // setContactFound(itemFound)
+        // setUserId(id)
+        dispatch({
+            type: "CONTACT-FOUND",
+            payload: id
+        })
     }
-// Object.getOwnPropertyNames(obj).length
+    // Object.getOwnPropertyNames(obj).length
     function handleKeyPress(onChange) {
-        const today = new Date();
-        const time = today.getHours() + ":" + today.getMinutes();
+        // const today = new Date();
+        // const time = today.getHours() + ":" + today.getMinutes();
+        
+        // const newData = [...data]
+        // const itemFound = { ...data.find(item => item.id === userId) }
+        // const Index = data.findIndex(item => item.id === userId)
+        // const newMessegeSent = {
+        //     messegeText: onChange,
+        //     createdAt: time,
+        //     self: true,
+        // }
+        // const messegeItem = [...itemFound.messeges]
+        // messegeItem.push(newMessegeSent)
+        // itemFound.messeges = messegeItem
+        // newData[Index] = itemFound;
+        // const newContacts = { ...contactFound }
+        // setData(newData)
+        dispatch({
+            type: "MESSEGE-SENT",
+            payload: onChange
+        })
+    
+        // const newMesseges = [...contactFound.messeges]
+        // newMesseges.push(newMessegeSent)
+        // newContacts.messeges = newMesseges;
+        // // setContactFound(newContacts);
 
-        const newData = [...data]
-        const itemFound = { ...data.find(item => item.id === userId) }
-        const Index = data.findIndex(item => item.id === userId)
-        const newMessegeSent = {
-            messegeText: onChange,
-            createdAt: time,
-            self: true,
-        }
-        const messegeItem = [...itemFound.messeges]
-        messegeItem.push(newMessegeSent)
-        itemFound.messeges = messegeItem
-        newData[Index] = itemFound;
- 
-        setData(newData)
-        const newContacts = { ...contactFound }
-        const newMesseges = [...contactFound.messeges]
-        newMesseges.push(newMessegeSent)
-        newContacts.messeges = newMesseges;
-        setContactFound(newContacts);
-        
-        newData.splice(Index , 1)
-        newData.unshift(itemFound)
-        
+        // newData.splice(Index, 1)
+        // newData.unshift(itemFound)
+
     }
 
     function handleInputChange(value) {
-        setSearchValue(value)
+        // setSearchValue(value)
+        dispatch({
+            type: "SEARCH_VALUE_PASSED",
+            payload: value
+
+        })
     }
 
     return (
