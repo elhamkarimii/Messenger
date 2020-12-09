@@ -1,6 +1,7 @@
-import React, { useReducer, useState } from "react";
+import React, { useContext, useReducer } from "react";
 import styled from "styled-components";
 import reducer from "./reducer"
+import { IdContext } from "./Context"
 
 const Container = styled.div`
     width: 495px;
@@ -39,7 +40,6 @@ const RecentDate = styled.p`
     margin-left: auto;
     font-size: 14px;
     color: #9c9c9c;
-    /* margin-right: -26px; */
 `
 const UnreadBox = styled.div`
     width:28px;
@@ -51,21 +51,17 @@ const UnreadBox = styled.div`
     align-items:center;
     justify-content:center;
     position: absolute;
-    /* top: 58px; */
     bottom:6px;
     right:6px;
 `
-export default function Contacts({ name, src, createdAt, lastMessege, onHandleContactClick ,id, clickContact, messegeLength, userId}) {
-    // const [unreadMessege, setUnreadMessege ] = useState(messegeLength)
-
-    const [{unreadMessege}, dispatch] = useReducer(reducer, {
+export default function Contacts({ name, src, createdAt, lastMessege, id, clickContact, messegeLength }) {
+    const userId = useContext(IdContext)
+    const [{ unreadMessege }, dispatch] = useReducer(reducer, {
         unreadMessege: messegeLength
     })
- 
-    function handleClick(e) {
-        onHandleContactClick()
+
+    function handleClick() {
         clickContact()
-        // setUnreadMessege(0);
         dispatch({
             type: 'UNREAD_MESSAGES'
         })
@@ -85,4 +81,3 @@ export default function Contacts({ name, src, createdAt, lastMessege, onHandleCo
         </Container>
     )
 }
-

@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import DATA from "./data.json"
 import * as fa from 'react-icons/fa';
-
 
 const Container = styled.div`
     height:20px;

@@ -1,20 +1,17 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useRef, useEffect, useContext} from "react";
 import styled from "styled-components"
-import DATA from "./data.json"
 import * as fa from 'react-icons/fa';
 import reducer from "./reducer"
+import {IdContext} from "./Context"
 
 
 const MessegesWrapper = styled.div`
-    /* border: 8px solid #ccc; */
-    /* display: flex; */
-    /* flex-direction: column; */
     background-color: #c5f6d8;
     width:100%;
     height : 430px;
     overflow-y:scroll;
+    scroll-behavior: smooth;
     position:relative;
-    /* position: relative; */
 `
 const Messeges = styled.div`
    min-height: 27px;
@@ -50,19 +47,22 @@ const SendMessegeInput = styled.input`
     font-family:"Segoe";
 
 `
-const SendIcon = styled.p`
-    
-`
+const SendIcon = styled.p``
+
 export function MessegeBar({ messeges, onKeyPress }) {
-    // const [onChange, setOnchange] = useState('');
+
+    const userId = useContext(IdContext)
+    const scrollDown = useRef()
+
+    useEffect(() => {
+        scrollDown.current.scrollTo(250,scrollDown.current.scrollHeight)
+    }, [userId, messeges]);
 
     const [{ onChange }, dispatch] = useReducer(reducer, {
         onChange: ""
     })
 
-
     function handleInputChange(e) {
-        // setOnchange(e.target.value)
         dispatch({
             type: 'WRITING_MESSEGE',
             payload: e.target.value
@@ -72,45 +72,24 @@ export function MessegeBar({ messeges, onKeyPress }) {
     function handleSendMessege() {
         if (onChange) {
             onKeyPress(onChange)
-            // setOnchange("")
             dispatch({
                 type: 'CLEARING_MESSEGE_INPUT'
             })
         }
-        // const newMessege = [...textMessege]
-        // newMessege.push({
-        //     messegeText: onChange,
-        //     createdAt: "14:02",
-        //     self: true
-        // })
-        // setTextMessege(newMessege)
-        // console.log(newMessege);
-        // setOnchange('')
     }
 
     function handleKeyPress(e) {
         if (e.key === "Enter" && onChange) {
             onKeyPress(onChange)
-            // setOnchange("")
             dispatch({
                 type: 'CLEARING_MESSEGE_INPUT'
             })
         }
-        // if (e.key === 'Enter') {
-        //     const newMessege = [...textMessege]
-        //     newMessege.push({
-        //         messegeText: onChange,
-        //         createdAt: "14:02",
-        //         self: true
-        //     })
-        //     setTextMessege(newMessege)
-        //     setOnchange('')
-        // }
     }
 
     return (
         <>
-            <MessegesWrapper>
+            <MessegesWrapper ref={scrollDown}>
                 {messeges.map(messege => <Messeges self={messege.self} key={messege.id}>{messege.messegeText}</Messeges>)}
             </MessegesWrapper>
             <SendMessegeBox>

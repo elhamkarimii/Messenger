@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import Contacts from "./Contacts";
+import {DataContext} from "./Context"
 
-export default function ContactContainer({ onHandleContClick, clickHandler, data, onChange , userId}) {
-
+export default function ContactContainer({ clickHandler, onChange }) {
+    const data = useContext(DataContext)
     const filteredContacts = data.filter(item => item.name.toLowerCase().includes(onChange.toLowerCase()))
- 
+
     return (<>
         {  filteredContacts.map(item => <Contacts
             key={item.id}
@@ -13,12 +14,10 @@ export default function ContactContainer({ onHandleContClick, clickHandler, data
             id={item.id}
             createdAt={item.messeges[item.messeges.length - 1].createdAt}
             lastMessege={item.messeges[item.messeges.length - 1].messegeText}
-            onHandleContactClick={onHandleContClick}
-            clickContact={() => clickHandler(item.id)} 
+            clickContact={() => clickHandler(item.id)}
             messegeLength={item.messeges.length}
-            userId={userId}
-            />)
-            }
+        />)
+        }
     </>
     )
 }

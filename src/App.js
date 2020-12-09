@@ -1,6 +1,5 @@
 import styled, { createGlobalStyle } from "styled-components";
-import React, { useState, useReducer } from "react";
-// import Contacts from "./Components/Contacts";
+import React, { useReducer } from "react";
 import ContactContainer from "./Components/ContactContainer";
 import UserHeader from "./Components/UserHeader";
 import FancyMessengerBox from "./Components/FancyMessengerBox";
@@ -8,18 +7,9 @@ import { MessegeBar } from "./Components/MessegeBar";
 import HomePage from "./Components/HomePage";
 import DATA from "./Components/data.json"
 import { GlobalFont } from './fonts/fonts'
-import * as fa from 'react-icons/fa';
 import reducer from "./Components/reducer"
+import {DataContext, IdContext} from './Components/Context'
 
-// const GlobalStyle = createGlobalStyle`
-//     body{
-//         margin: 0;
-//         padding: 0;
-//     }
-//     *{
-//         box-sizing: border-box;
-//     }
-// `
 const Wrapper = styled.div`
     margin: -8px;
     width: 100%;
@@ -51,81 +41,35 @@ const HeaderBox = styled.div`
     margin: -8px;
 `
 export default function App() {
-    // const [data, setData] = useState(DATA)
-    // const [mode, setMode] = useState("homePage");
-    // const [contactFound, setContactFound] = useState({});
-    // const [userId, setUserId] = useState(0)
-    // const [searchValue, setSearchValue] = useState("")
 
-    const [{ data, mode, contactFound, userId, searchValue }, dispatch] = useReducer(reducer, {
+    const [{ data, contactFound, userId, searchValue }, dispatch] = useReducer(reducer, {
         data: DATA,
-        mode: "homePage",
         contactFound: {},
         userId: 0,
         searchValue: ""
     })
 
     function handleBack() {
-        // setMode("homePage")
         dispatch({
             type: "HOMEPAGE_MODE"
         })
     }
 
-    function handleContactClick() {
-        // setMode("chatView")
-        dispatch({
-            type: "CHATVIEW_MODE"
-        })
-    }
-
     function handleFindContact(id) {
-     
-        // const dataCopied = [...data]
-        // const itemFound = dataCopied.find(item => item.id === id);
-        // setContactFound(itemFound)
-        // setUserId(id)
         dispatch({
             type: "CONTACT-FOUND",
             payload: id
         })
     }
-    // Object.getOwnPropertyNames(obj).length
+
     function handleKeyPress(onChange) {
-        // const today = new Date();
-        // const time = today.getHours() + ":" + today.getMinutes();
-        
-        // const newData = [...data]
-        // const itemFound = { ...data.find(item => item.id === userId) }
-        // const Index = data.findIndex(item => item.id === userId)
-        // const newMessegeSent = {
-        //     messegeText: onChange,
-        //     createdAt: time,
-        //     self: true,
-        // }
-        // const messegeItem = [...itemFound.messeges]
-        // messegeItem.push(newMessegeSent)
-        // itemFound.messeges = messegeItem
-        // newData[Index] = itemFound;
-        // const newContacts = { ...contactFound }
-        // setData(newData)
         dispatch({
             type: "MESSEGE-SENT",
             payload: onChange
         })
-    
-        // const newMesseges = [...contactFound.messeges]
-        // newMesseges.push(newMessegeSent)
-        // newContacts.messeges = newMesseges;
-        // // setContactFound(newContacts);
-
-        // newData.splice(Index, 1)
-        // newData.unshift(itemFound)
-
     }
 
     function handleInputChange(value) {
-        // setSearchValue(value)
         dispatch({
             type: "SEARCH_VALUE_PASSED",
             payload: value
@@ -134,25 +78,28 @@ export default function App() {
     }
 
     return (
+        <IdContext.Provider value={userId}>
+        <DataContext.Provider value={data}>
         <Wrapper>
-            {/* <GlobalStyle /> */}
             <GlobalFont />
             <HeaderBox />
             <MainContainer>
                 <LeftContainer>
-                    <FancyMessengerBox data={data} onInputChange={handleInputChange} />
-                    <ContactContainer onChange={searchValue} onHandleContClick={handleContactClick} clickHandler={handleFindContact} data={data} userId={userId} />
+                    <FancyMessengerBox onInputChange={handleInputChange} />
+                    <ContactContainer onChange={searchValue} clickHandler={handleFindContact} />
                 </LeftContainer>
                 <RightContainer>
-                    {mode === "chatView" &&
+                    {Object.getOwnPropertyNames(contactFound).length > 0 &&
                         <>
                             <UserHeader onBackToHomePage={handleBack} name={contactFound.name} avatarSrc={contactFound.src} />
                             <MessegeBar messeges={contactFound.messeges} onKeyPress={handleKeyPress} />
                         </>
                     }
-                    {mode === "homePage" && <HomePage />}
+                    {Object.getOwnPropertyNames(contactFound).length === 0 && <HomePage />}
                 </RightContainer>
             </MainContainer>
         </Wrapper>
+        </DataContext.Provider>
+        </IdContext.Provider>
     )
 }
